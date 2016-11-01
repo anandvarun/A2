@@ -367,7 +367,7 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                 jTextArea1.append("\n"+msgString);
 
                 //create a connection to the db
-                DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+                DBConn = DriverManager.getConnection(sourceURL,"root","");
 
             } catch (Exception e) {
 
@@ -511,7 +511,7 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                 jTextArea1.append("\n"+msgString);
 
                 //create a connection to the db
-                DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+                DBConn = DriverManager.getConnection(sourceURL,"root","");
 
             } catch (Exception e) {
 
@@ -641,7 +641,7 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                     String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
 
                     //create a connection to the db
-                    DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+                    DBConn = DriverManager.getConnection(sourceURL,"root","");
 
                 } catch (Exception e) {
 
@@ -778,7 +778,7 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                     String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
 
                     //create a connection to the db
-                    DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+                    DBConn = DriverManager.getConnection(sourceURL,"root","");
 
                 } catch (Exception e) {
 
