@@ -342,7 +342,7 @@ public class NewJFrame extends javax.swing.JFrame {
             //and the password is "remote_pass" - you will have to set this
             //account up in your database
 
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+            DBConn = DriverManager.getConnection(sourceURL,"root","");
 
         } catch (Exception e) {
 
@@ -530,7 +530,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 //and the password is "remote_pass" - you will have to set this
                 //account up in your database
 
-                DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+                DBConn = DriverManager.getConnection(sourceURL,"root","");
 
             } catch (Exception e) {
 
@@ -749,7 +749,7 @@ public class NewJFrame extends javax.swing.JFrame {
             //and the password is "remote_pass" - you will have to set this
             //account up in your database
 
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+            DBConn = DriverManager.getConnection(sourceURL,"root","");
 
         } catch (Exception e) {
 
@@ -827,7 +827,7 @@ public class NewJFrame extends javax.swing.JFrame {
             //and the password is "remote_pass" - you will have to set this
             //account up in your database
 
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+            DBConn = DriverManager.getConnection(sourceURL,"root","");
 
         } catch (Exception e) {
 
