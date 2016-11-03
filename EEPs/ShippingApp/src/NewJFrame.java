@@ -1,4 +1,6 @@
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,10 +28,34 @@ public class NewJFrame extends javax.swing.JFrame {
     String userName;
     
     /** Creates new form NewJFrame */
-    public NewJFrame(String userName) {
+    public NewJFrame(final String userName) {
         this.userName = userName;
         initComponents();
         jLabel1.setText("Shipping Application " + versionID);
+        addWindowListener(new WindowAdapter() {
+                 
+  public void windowClosing(WindowEvent e) {
+    //persist here
+    try
+        {
+        Class.forName("com.mysql.jdbc.Driver");  
+         Connection con=DriverManager.getConnection(  
+        "jdbc:mysql://localhost:3306/login","root","");  
+ 
+        String timeStamp = new SimpleDateFormat("yyyy:MM:dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+        Statement stmt=con.createStatement(); 
+        System.out.println("Tracked");
+        String quey="update track set logoutTime='"+ timeStamp + "' where username='"+ 
+                userName +"' and logoutTime='0' and loggedInto = 'ShippingApp'";
+        stmt.executeUpdate(quey);
+        dispose();
+        } catch(Exception k){
+            String errString =  "\nProblem accessing login repository:: " + k;
+                jTextArea1.append(errString);
+        }
+    }
+  
+});
     }
 
     /** This method is called from within the constructor to
