@@ -1,7 +1,12 @@
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /******************************************************************************
  * File:NewJFrame.java
@@ -29,11 +34,38 @@ import java.sql.ResultSet;
 public class InventoryMainFrame extends javax.swing.JFrame {
 
        String versionID = "v2.10.10";
+       String userName;
 
     /** Creates new form AddInventoryMainFrame */
-    public InventoryMainFrame() {
+    public InventoryMainFrame(final String userName) {
+        this.userName = userName;
         initComponents();
         jLabel1.setText("Inventory Management Application " + versionID);
+        
+         addWindowListener(new WindowAdapter() {
+                 
+  public void windowClosing(WindowEvent e) {
+    //persist here
+    try
+        {
+        Class.forName("com.mysql.jdbc.Driver");  
+         Connection con=DriverManager.getConnection(  
+        "jdbc:mysql://localhost:3306/login","root","");  
+ 
+        String timeStamp = new SimpleDateFormat("yyyy:MM:dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+        Statement stmt=con.createStatement(); 
+        System.out.println("Tracked");
+        String quey="update track set logoutTime='"+ timeStamp + "' where username='"+ 
+                userName +"' and logoutTime='0' and loggedInto = 'InventoryApp'";
+        stmt.executeUpdate(quey);
+        dispose();
+        } catch(Exception k){
+            String errString =  "\nProblem accessing login repository:: " + k;
+                jTextArea1.append(errString);
+        }
+    }
+  
+});
     }
 
     /** This method is called from within the constructor to
@@ -68,6 +100,11 @@ public class InventoryMainFrame extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jRadioButton4 = new javax.swing.JRadioButton();
+        jRadioButton5 = new javax.swing.JRadioButton();
+        jRadioButton6 = new javax.swing.JRadioButton();
+        jRadioButton7 = new javax.swing.JRadioButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,6 +139,11 @@ public class InventoryMainFrame extends javax.swing.JFrame {
         jLabel4.setText("Quantity");
 
         jTextField1.setText("localhost");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Add Item");
         jButton1.setActionCommand("jButton1");
@@ -150,10 +192,49 @@ public class InventoryMainFrame extends javax.swing.JFrame {
 
         jLabel8.setText("Decrements inventory count of item selected from the list");
 
+        jRadioButton4.setText("Culture Boxes");
+        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton4ActionPerformed(evt);
+            }
+        });
+
+        jRadioButton5.setText("Genomics");
+        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton5ActionPerformed(evt);
+            }
+        });
+
+        jRadioButton6.setText("Processing");
+        jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton6ActionPerformed(evt);
+            }
+        });
+
+        jRadioButton7.setText("Reference Material");
+        jRadioButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Logout");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(324, 324, 324)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,11 +256,17 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jRadioButton1)
                                     .addComponent(jRadioButton3)
-                                    .addComponent(jRadioButton2))
-                                .addGap(51, 51, 51)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                                    .addComponent(jRadioButton2)
+                                    .addComponent(jRadioButton4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButton6)
+                                    .addComponent(jRadioButton5)
+                                    .addComponent(jRadioButton7))
+                                .addGap(38, 38, 38)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
@@ -192,26 +279,25 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 10, Short.MAX_VALUE))))
+                                .addGap(0, 40, Short.MAX_VALUE))))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(17, 17, 17)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton5)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(324, 324, 324)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -221,38 +307,44 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jRadioButton1)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(jRadioButton5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jRadioButton3)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel3)
+                            .addComponent(jRadioButton6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jRadioButton2)
-                            .addComponent(jLabel4)))
+                            .addComponent(jLabel4)
+                            .addComponent(jRadioButton7))
+                        .addGap(10, 10, 10)
+                        .addComponent(jRadioButton4))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton4)))))
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5))
         );
 
         pack();
@@ -262,6 +354,10 @@ public class InventoryMainFrame extends javax.swing.JFrame {
         jRadioButton1.setSelected(true);
         jRadioButton2.setSelected(false);
         jRadioButton3.setSelected(false);
+        jRadioButton4.setSelected(false);
+        jRadioButton5.setSelected(false);
+        jRadioButton6.setSelected(false);
+        jRadioButton7.setSelected(false);
 
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
@@ -270,6 +366,10 @@ public class InventoryMainFrame extends javax.swing.JFrame {
         jRadioButton1.setSelected(false);
         jRadioButton2.setSelected(false);
         jRadioButton3.setSelected(true);
+        jRadioButton4.setSelected(false);
+        jRadioButton5.setSelected(false);
+        jRadioButton6.setSelected(false);
+        jRadioButton7.setSelected(false);
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
@@ -277,8 +377,12 @@ public class InventoryMainFrame extends javax.swing.JFrame {
         jRadioButton1.setSelected(false);
         jRadioButton2.setSelected(true);        
         jRadioButton3.setSelected(false);
+        jRadioButton4.setSelected(false);
+        jRadioButton5.setSelected(false);
+        jRadioButton6.setSelected(false);
+        jRadioButton7.setSelected(false);
     }//GEN-LAST:event_jRadioButton2ActionPerformed
-
+     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         // Adds inventory to database
@@ -303,7 +407,7 @@ public class InventoryMainFrame extends javax.swing.JFrame {
        
         jTextArea1.setText("");
         
-        if (!jRadioButton1.isSelected() && !jRadioButton2.isSelected() && !jRadioButton3.isSelected())
+        if (!jRadioButton1.isSelected() && !jRadioButton2.isSelected() && !jRadioButton3.isSelected() && !jRadioButton4.isSelected() && !jRadioButton5.isSelected() && !jRadioButton6.isSelected() && !jRadioButton7.isSelected())
         {
             fieldError = true;
             jTextArea1.append("\nMust select Tree, Seeds, or Shrubs radio button.");
@@ -362,12 +466,16 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                 //define the data source
                 String SQLServerIP = jTextField1.getText();
                 String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
+                
 
                 msgString = ">> Establishing connection with: " + sourceURL + "...";
                 jTextArea1.append("\n"+msgString);
+                
+            
 
                 //create a connection to the db
                 DBConn = DriverManager.getConnection(sourceURL,"root","");
+                
 
             } catch (Exception e) {
 
@@ -380,6 +488,8 @@ public class InventoryMainFrame extends javax.swing.JFrame {
 
         //If there is not connection error, then we form the SQL statement
         //and then execute it.
+        //comment added
+        //comment
 
         if (!connectError && !fieldError )
         {
@@ -432,7 +542,57 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                     
                     tableSelected = "SEEDS";
                 }
+                    
+               // if culture boxes are selected then insert inventory into cultureboxes 
+                // table
 
+                if (jRadioButton4.isSelected())
+                {
+                    SQLstatement = ( "INSERT INTO cultureboxes (productid, " +
+                            "productdescription, productquantity, productprice) VALUES ( '" +
+                            productID + "', " + "'" + description + "', " +
+                            quantity + ", " + perUnitCost + ");");
+        
+                    tableSelected = "CULTURE BOXES";
+                }
+                // if processing equipment is selected then insert inventory into strubs
+                // table
+
+                if (jRadioButton6.isSelected())
+                {
+                    SQLstatement = ( "INSERT INTO processing (productid, " +
+                            "productdescription, productquantity, productprice) VALUES ( '" +
+                            productID + "', " + "'" + description + "', " +
+                            quantity + ", " + perUnitCost + ");");
+                    
+                    tableSelected = "PROCESSING";
+                }
+
+                // if genomics are selected then insert inventory into the genomics
+                // table
+
+                if (jRadioButton5.isSelected())
+                {
+                    SQLstatement = ( "INSERT INTO genomics (productid, " +
+                            "productdescription, productquantity, productprice) VALUES ( '" +
+                            productID + "', " + "'" + description + "', " +
+                            quantity + ", " + perUnitCost + ");");
+                
+                    tableSelected = "GENOMICS";
+                }
+
+                // if reference materials are selected then insert inventory into referencematerials
+                // table
+
+                if (jRadioButton7.isSelected())
+                {
+                    SQLstatement = ( "INSERT INTO referencematerials (productid, " +
+                            "productdescription, productquantity, productprice) VALUES ( '" +
+                            productID + "', " + "'" + description + "', " +
+                            quantity + ", " + perUnitCost + ");");
+                    
+                    tableSelected = "REFERENCE MATERIALS";
+                }
                 // execute the update
                 executeUpdateVal = s.executeUpdate(SQLstatement);
 
@@ -471,7 +631,7 @@ public class InventoryMainFrame extends javax.swing.JFrame {
         java.sql.Statement s = null;    // SQL statement pointer
 
         // Check to make sure a radio button is selected
-        if (jRadioButton1.isSelected() || jRadioButton2.isSelected() || jRadioButton3.isSelected())
+        if (jRadioButton1.isSelected() || jRadioButton2.isSelected() || jRadioButton3.isSelected() || jRadioButton4.isSelected() || jRadioButton5.isSelected() || jRadioButton6.isSelected() || jRadioButton7.isSelected())
         {
             fieldError = false;
 
@@ -506,12 +666,15 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                 //define the data source
                 String SQLServerIP = jTextField1.getText();
                 String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
+                
 
                 msgString = ">> Establishing connection with: " + sourceURL + "...";
                 jTextArea1.append("\n"+msgString);
+                
 
                 //create a connection to the db
                 DBConn = DriverManager.getConnection(sourceURL,"root","");
+                
 
             } catch (Exception e) {
 
@@ -555,7 +718,30 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                     res = s.executeQuery( "Select * from seeds" );
                     tableSelected = "SEED";
                 }
-
+                // ... here is the SQL for culture boxes
+                if (jRadioButton4.isSelected())
+                {
+                    res = s.executeQuery( "Select * from cultureboxes" );
+                    tableSelected = "CULTURE BOXES";
+                }
+                // ... here is the SQL for processing
+                if (jRadioButton6.isSelected())
+                {
+                    res = s.executeQuery( "Select * from processing" );
+                    tableSelected = "PROCESSING";
+                }
+                // ... here is the SQL for genomics
+                if (jRadioButton5.isSelected())
+                {
+                    res = s.executeQuery( "Select * from genomics" );
+                    tableSelected = "GENOMICS";
+                }
+                // ... here is the SQL for genomics
+                if (jRadioButton7.isSelected())
+                {
+                    res = s.executeQuery( "Select * from referencematerials" );
+                    tableSelected = "REFERENCE MATERIALS";
+                }
                 // Now we list the inventory for the selected table
                 jTextArea1.setText("");
                 while (res.next())
@@ -639,9 +825,11 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                     //define the data source
                     String SQLServerIP = jTextField1.getText();
                     String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
+                    
 
                     //create a connection to the db
                     DBConn = DriverManager.getConnection(sourceURL,"root","");
+                    
 
                 } catch (Exception e) {
 
@@ -677,7 +865,29 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                         {
                             SQLstatement = ( "DELETE FROM seeds WHERE product_code = '" + productID + "';");
                         }
-   
+                        // if culture boxes inventory selected
+                        if (jRadioButton4.isSelected())
+                        {
+                            SQLstatement = ( "DELETE FROM cultureboxes WHERE productid = '" + productID + "';");
+                        }
+
+                        // if processing equipment inventory selected
+                        if (jRadioButton6.isSelected())
+                        {
+                            SQLstatement = ( "DELETE FROM processing WHERE productid = '" + productID + "';");
+                        }
+
+                        // if genomics inventory selected
+                        if (jRadioButton5.isSelected())
+                        {
+                            SQLstatement = ( "DELETE FROM genomics WHERE productid = '" + productID + "';");
+                        }
+
+                        // if reference materials  inventory selected
+                        if (jRadioButton7.isSelected())
+                        {
+                            SQLstatement = ( "DELETE FROM referencematerials WHERE productid = '" + productID + "';");
+                        }
                         // execute the delete query
                         
                         executeUpdateVal = s.executeUpdate(SQLstatement);
@@ -776,9 +986,11 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                     //define the data source
                     String SQLServerIP = jTextField1.getText();
                     String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
+                    
 
                     //create a connection to the db
                     DBConn = DriverManager.getConnection(sourceURL,"root","");
+                    
 
                 } catch (Exception e) {
 
@@ -820,7 +1032,37 @@ public class InventoryMainFrame extends javax.swing.JFrame {
                             SQLstatement2 = ("SELECT * from seeds where product_code = '" + productID + "';");
                             tableSelected = "SEEDS";
                         }
+                        // if culture boxes inventory selected
+                        if (jRadioButton4.isSelected())
+                        {
+                            SQLstatement1 = ("UPDATE cultureboxes set productquantity=(productquantity-1) where productid = '" + productID + "';");
+                            SQLstatement2 = ("SELECT * from cultureboxes where productid = '" + productID + "';");
+                            tableSelected = "CULTURE BOXES";
+                        }
 
+                        // if processing equipment inventory selected
+                        if (jRadioButton6.isSelected())
+                        {
+                            SQLstatement1 = ("UPDATE processing set productquantity=(productquantity-1) where productid = '" + productID + "';");
+                            SQLstatement2 = ("SELECT * from processing where productid = '" + productID + "';");
+                            tableSelected = "PROCESSING";
+                        }
+
+                        // if genomics inventory selected
+                        if (jRadioButton5.isSelected())
+                        {
+                            SQLstatement1 = ("UPDATE genomics set productquantity=(productquantity-1) where productid = '" + productID + "';");
+                            SQLstatement2 = ("SELECT * from genomics where productid = '" + productID + "';");
+                            tableSelected = "GENOMICS";
+                        }
+
+                        // if reference materials  inventory selected
+                        if (jRadioButton7.isSelected())
+                        {
+                            SQLstatement1 = ("UPDATE referencematerials set productquantity=(productquantity-1) where productid = '" + productID + "';");
+                            SQLstatement2 = ("SELECT * from referencematerials where productid = '" + productID + "';");
+                            tableSelected = "REFERENCE MATERIALS";
+                        }
                         // execute the update, then query the BD for the table entry for the item just changed
                         // and display it for the user
                         
@@ -867,13 +1109,84 @@ public class InventoryMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
 
+    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+        // TODO add your handling code here:
+         jRadioButton1.setSelected(false);
+        jRadioButton2.setSelected(false);        
+        jRadioButton3.setSelected(false);
+        jRadioButton4.setSelected(true);
+        jRadioButton5.setSelected(false);
+        jRadioButton6.setSelected(false);
+        jRadioButton7.setSelected(false);
+    }//GEN-LAST:event_jRadioButton4ActionPerformed
+
+    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+        // TODO add your handling code here:
+         jRadioButton1.setSelected(false);
+        jRadioButton2.setSelected(false);        
+        jRadioButton3.setSelected(false);
+        jRadioButton4.setSelected(false);
+        jRadioButton5.setSelected(true);
+        jRadioButton6.setSelected(false);
+        jRadioButton7.setSelected(false);
+    }//GEN-LAST:event_jRadioButton5ActionPerformed
+
+    private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton6ActionPerformed
+        // TODO add your handling code here:
+         jRadioButton1.setSelected(false);
+        jRadioButton2.setSelected(false);        
+        jRadioButton3.setSelected(false);
+        jRadioButton4.setSelected(false);
+        jRadioButton5.setSelected(false);
+        jRadioButton6.setSelected(true);
+        jRadioButton7.setSelected(false);
+    }//GEN-LAST:event_jRadioButton6ActionPerformed
+
+    private void jRadioButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton7ActionPerformed
+        // TODO add your handling code here:
+         jRadioButton1.setSelected(false);
+        jRadioButton2.setSelected(false);        
+        jRadioButton3.setSelected(false);
+        jRadioButton4.setSelected(false);
+        jRadioButton5.setSelected(false);
+        jRadioButton6.setSelected(false);
+        jRadioButton7.setSelected(true);
+    }//GEN-LAST:event_jRadioButton7ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        //logout code here
+        try
+        {
+        Class.forName("com.mysql.jdbc.Driver");  
+         Connection con=DriverManager.getConnection(  
+        "jdbc:mysql://localhost:3306/login","root","");  
+ 
+        String timeStamp = new SimpleDateFormat("yyyy:MM:dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+        Statement stmt=con.createStatement(); 
+        System.out.println("Tracked");
+        String quey="update track set logoutTime='"+ timeStamp + "' where username='"+ 
+                this.userName +"' and logoutTime='0' and loggedInto = 'InventoryApp'";
+        stmt.executeUpdate(quey);
+        dispose();
+        } catch(Exception e){
+            String errString =  "\nProblem accessing login repository:: " + e;
+                jTextArea1.append(errString);
+        }
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
     * @param args the command line arguments
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InventoryMainFrame().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }
@@ -883,6 +1196,7 @@ public class InventoryMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -894,6 +1208,10 @@ public class InventoryMainFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JRadioButton jRadioButton6;
+    private javax.swing.JRadioButton jRadioButton7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
